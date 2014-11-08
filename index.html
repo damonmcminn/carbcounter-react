@@ -1,0 +1,26 @@
+<!doctype html>
+<html ng-app="nutrition">
+  <head>
+    <link rel="stylesheet" type"text/css" href="static/bootstrap.min.css"/>
+    <link rel="stylesheet" type"text/css" href="static/bootstrap-theme.min.css"/>
+  </head>
+  <body>
+    <script type="text/javascript" src="static/angular.min.js"></script>
+    <script type="text/javascript" src="app/app.js"></script>
+    <div ng-controller="FoodController as food">
+      <div id="food-input">
+        <form name="foodForm">
+          Search:<br>
+          <input type="text" ng-model="food.words" required="true"></input><br>
+          Weight of food:<br>
+          <input type="number" ng-model="food.weight"></input><br>
+          <button ng-click="findFood()" id="find-food">Find Food</button>
+        </form>
+      </div>
+      <div id="Results" ng-repeat="food in results">
+        <p>{{food.name}}</p>
+        <p>{{food.carbs}}</p>
+      </div>
+    </div>
+  <body>
+</html>
