@@ -1,22 +1,38 @@
 (function() {
   var app = angular.module('nutrition', []);
 
-  app.controller('FoodController', ['$scope', '$http', function($scope, $http) {
-
+  app.controller(
+    'FoodController',
+    ['$scope', '$http', '$location', 
+    function($scope, $http, $location) {
+    
     $http.defaults.useXDomain = true;
     delete $http.defaults.headers.common['X-Requested-With'];
 
-    var url = 'http://localhost:50000/food?name=';
+    var url;
+    if ($location.protocol() === 'file') {
+      url = 'http://localhost:50000/food?name=';
+    } else {
+      url = 'http://api.damonmcminn.com/food?name=';
+    }
+
+    function calcMacro(macro, weight) {
+      return Number(macro * weight).toFixed(2);
+    }
 
     $scope.findFood = function() {
+      if ($scope.foodForm.$invalid) {
+        return;
+      }
       var terms = $scope.food.words.split(' ').join('-');
       var weight = $scope.food.weight || 1;
       $http.get((url + terms)).success(function(data, status, headers, config) {
+        console.log(data.links);
         var results = [];
         data.foods.forEach(function(food) {
           results.push({
             name: food.name,
-            carbs: Number(food.carbohydrate * weight).toFixed(2) + food.values.unit
+            carbs: calcMacro(food.carbohydrate, weight),
           });
         });
 
@@ -25,10 +41,13 @@
         }
 
         $scope.results = results;
-        /* clear the form */
-        $scope.food = null;
-        $scope.foodForm.$setPristine();
         });
+
+      $scope.clearForm = function() {
+        /* clear the form */
+        $scope.foodForm.$setPristine();
+        $scope.food = null;
+      };
     };
   }]);
 })();
