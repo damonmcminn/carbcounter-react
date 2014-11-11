@@ -3,23 +3,47 @@
   <head>
     <link rel="stylesheet" type"text/css" href="static/bootstrap.min.css"/>
     <link rel="stylesheet" type"text/css" href="static/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" type"text/css" href="static/nutrition.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   </head>
   <body>
     <script type="text/javascript" src="static/angular.min.js"></script>
     <script type="text/javascript" src="app/app.js"></script>
-    <div ng-controller="FoodController as food">
+    <div ng-controller="FoodController as food" class="container">
+      <h2 class="centre">Carbs Finder</h2>
       <div id="food-input">
-        <form name="foodForm">
-          Search:<br>
-          <input type="text" ng-model="food.words" required="true"></input><br>
-          Weight of food:<br>
-          <input type="number" ng-model="food.weight"></input><br>
-          <button ng-click="findFood()" id="find-food">Find Food</button>
+        <form name="foodForm" role="form">
+          <div class="form-group">
+            <label for="words">Food</label>
+            <input class="form-control" id="words" type="search" ng-model="food.words" required="true" placeholder="Type words here..." />
+          </div>
+          <div class="form-group">
+            <label for="numbers">Weight</label>
+            <input class="form-control" id="numbers" type="number" ng-model="food.weight" placeholder="Optional" ng-pattern="/\d+/">
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <button ng-click="findFood()" id="find-food" class="btn btn-primary btn-full-width">Find Food</button>
+            </div>
+            <div class="col-xs-6">
+              <button ng-click="clearForm()" id="clear-search" class="btn btn-danger btn-full-width">Clear Search</button>
+            </div>
+          </div>
         </form>
       </div>
-      <div id="Results" ng-repeat="food in results">
-        <p>{{food.name}}</p>
-        <p>{{food.carbs}}</p>
+      <div id="Results" ng-show="results.length"> 
+        <hr>
+        <h3 class="centre">Results</h3>
+        <table class="table">
+          <tr>
+            <th>Food</th>
+            <th>Carbohydrate</th>
+          </tr>
+          <tr ng-repeat="food in results | orderBy:'carbs'">
+            <td>{{food.name}}</td>
+            <td>{{food.carbs}}</>
+            </tr>
+        </table>
       </div>
     </div>
   <body>
