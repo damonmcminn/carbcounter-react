@@ -37,11 +37,11 @@
         <table class="table">
           <tr>
             <th>Food</th>
-            <th>Carbohydrate</th>
+            <th class="text-right">Carbohydrate (g)</th>
           </tr>
           <tr ng-repeat="food in results | orderBy:'carbs'">
             <td>{{food.name}}</td>
-            <td>{{food.carbs}}</>
+            <td class="text-right">{{food.carbs}}</>
             </tr>
         </table>
       </div>

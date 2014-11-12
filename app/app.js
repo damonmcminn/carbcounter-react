@@ -27,7 +27,6 @@
       var terms = $scope.food.words.split(' ').join('-');
       var weight = $scope.food.weight || 1;
       $http.get((url + terms)).success(function(data, status, headers, config) {
-        console.log(data.links);
         var results = [];
         data.foods.forEach(function(food) {
           results.push({
