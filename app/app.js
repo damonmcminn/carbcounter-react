@@ -11,9 +11,9 @@
 
     var url;
     if ($location.protocol() === 'file') {
-      url = 'http://localhost:50000/food?name=';
+      url = 'http://localhost:50000/nutrition/food?name=';
     } else {
-      url = 'http://api.damonmcminn.com/food?name=';
+      url = 'https://api.damonmcminn.com/nutrition/food?name=';
     }
 
     function calcMacro(macro, weight) {
