@@ -16,8 +16,12 @@
       url = 'https://api.damonmcminn.com/nutrition/food?name=';
     }
 
-    function calcMacro(macro, weight) {
-      return Number(macro * weight).toFixed(2);
+    function calcMacro(macro, weight, isPercentage) {
+      if (isPercentage) {
+        return Math.round(macro * weight * 100);
+      } else {
+        return Number(macro * weight).toFixed(2);
+      }
     }
 
     $scope.findFood = function() {
@@ -25,17 +29,21 @@
         return;
       }
       var terms = $scope.food.words.split(' ').join('-');
+      var isPercentage = !$scope.food.weight;
       var weight = $scope.food.weight || 1;
       $http.get((url + terms)).success(function(data, status, headers, config) {
-        var results = [];
+        var results = {
+          food: [],
+          unit: isPercentage ? '%' : 'g',
+        };
         data.foods.forEach(function(food) {
-          results.push({
+          results.food.push({
             name: food.name,
-            carbs: calcMacro(food.carbohydrate, weight),
+            carbs: calcMacro(food.carbohydrate, weight, isPercentage),
           });
         });
 
-        if (results.length === 0) {
+        if (results.food.length === 0) {
           results = [{name: 'No results'}];
         }
 
@@ -44,8 +52,11 @@
 
       $scope.clearForm = function() {
         /* clear the form */
+        /* stop the button from submitting
+         * submit must be ng-click default action or something like that
+         */
+        $scope.food = '';
         $scope.foodForm.$setPristine();
-        $scope.food = null;
       };
     };
   }]);
