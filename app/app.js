@@ -27,31 +27,39 @@
       }
     }
 
+    $scope.results = {
+      food: [],
+      noResults: undefined,
+      moreResults: false,
+      nextUrl: undefined,
+      unit: undefined,
+    };
+
     $scope.findFood = function() {
       if ($scope.foodForm.$invalid) {
         return;
       }
+
       var terms = $scope.food.words.split(' ').join('-');
       var isPercentage = !$scope.food.weight;
       var weight = $scope.food.weight || 1;
-      $http.get((url + terms)).success(function(data, status, headers, config) {
-        var results = {
-          food: [],
-          unit: isPercentage ? '%' : 'g',
-        };
+      
+      var req = ($scope.results.moreResults ?
+        $scope.results.nextUrl : (url + terms));
+
+      $http.get(req).success(function(data, status, headers, config) {
+        $scope.results.noResults = (data.foods.length === 0) ? true : false;
+        $scope.results.moreResults = (data.links.next !== undefined);
+        $scope.results.unit = isPercentage ? '%' : 'g';
+        $scope.results.nextUrl = data.links.next;
+
         data.foods.forEach(function(food) {
-          results.food.push({
+          $scope.results.food.push({
             name: food.name,
             carbs: calcMacro(food.carbohydrate, weight, isPercentage),
           });
         });
-
-        if (results.food.length === 0) {
-          results = [{name: 'No results'}];
-        }
-
-        $scope.results = results;
-        });
+      });
 
       $scope.clearForm = function(e) {
         /* clear the form */

@@ -31,6 +31,10 @@
           </div>
         </form>
       </div>
+      <div id="no-results" ng-show="results.noResults">
+        <hr>
+        <h4 class="text-center">No results found for {{food.words}}. Try spelling it differently.</h4>
+      </div>
       <div id="Results" ng-show="results.food.length"> 
         <hr>
         <h3 class="centre">Results</h3>
@@ -44,6 +48,9 @@
             <td class="text-right">{{food.carbs}}</>
             </tr>
         </table>
+        <div class="centre" ng-show="results.moreResults">
+          <button ng-click="findFood()" id="show-more-results" class="btn btn-default">Load More Results</button>
+        </div>
       </div>
     </div>
   <body>
