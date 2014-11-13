@@ -1,4 +1,13 @@
 (function() {
+
+  function calcMacro(macro, weight, isPercentage) {
+    if (isPercentage) {
+      return Math.round(macro * weight * 100);
+    } else {
+      return Number(macro * weight).toFixed(2);
+    }
+  }
+
   var app = angular.module('nutrition', []);
 
   app.controller(
@@ -19,26 +28,27 @@
       url = 'https://api.damonmcminn.com/nutrition/food?name=';
     }
 
-    function calcMacro(macro, weight, isPercentage) {
-      if (isPercentage) {
-        return Math.round(macro * weight * 100);
-      } else {
-        return Number(macro * weight).toFixed(2);
-      }
-    }
-
     $scope.results = {
       food: [],
       noResults: undefined,
       moreResults: false,
       nextUrl: undefined,
       unit: undefined,
+      prevSearch: null,
     };
 
-    $scope.findFood = function() {
+    $scope.findFood = function(e) {
       if ($scope.foodForm.$invalid) {
         return;
       }
+      
+      if (e.target.id === 'find-food') {
+        $scope.results.moreResults = false;
+        $scope.results.food = [];
+      }
+      
+      // don't bind to $scope
+      $scope.results.prevSearch = new Object($scope.food.words).toString();
 
       var terms = $scope.food.words.split(' ').join('-');
       var isPercentage = !$scope.food.weight;
@@ -60,13 +70,16 @@
           });
         });
       });
-
-      $scope.clearForm = function(e) {
-        /* clear the form */
-        $scope.food = '';
-        $scope.foodForm.$setPristine();
-        e.preventDefault();
-      };
     };
+
+    $scope.clearForm = function(e) {
+      /* clear the form */
+      $scope.results.noResults = false;
+      $scope.results.food = [];
+      $scope.food = '';
+      $scope.foodForm.$setPristine();
+      e.preventDefault();
+    };
+
   }]);
 })();

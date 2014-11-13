@@ -23,7 +23,7 @@
           </div>
           <div class="row">
             <div class="col-xs-6">
-              <button ng-click="findFood()" id="find-food" class="btn btn-primary btn-full-width">Find Food</button>
+              <button ng-click="findFood($event)" id="find-food" class="btn btn-primary btn-full-width">Find Food</button>
             </div>
             <div class="col-xs-6">
               <button ng-click="clearForm($event)" id="clear-search" class="btn btn-danger btn-full-width">Clear Search</button>
@@ -49,7 +49,7 @@
             </tr>
         </table>
         <div class="centre" ng-show="results.moreResults">
-          <button ng-click="findFood()" id="show-more-results" class="btn btn-default">Load More Results</button>
+          <button ng-click="findFood($event)" id="show-more-results" class="btn btn-default">Load More Results</button>
         </div>
       </div>
     </div>
