@@ -13,3 +13,7 @@ hr {
 .container {
   max-width: 450px;
 }
+
+#show-more-results {
+  margin-bottom: 3em;
+}
