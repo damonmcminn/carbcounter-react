@@ -10,6 +10,9 @@
     delete $http.defaults.headers.common['X-Requested-With'];
 
     var url;
+    /* should be serving this from localhost server
+     * then no conditional url
+     */
     if ($location.protocol() === 'file') {
       url = 'http://localhost:50000/nutrition/food?name=';
     } else {
@@ -50,13 +53,11 @@
         $scope.results = results;
         });
 
-      $scope.clearForm = function() {
+      $scope.clearForm = function(e) {
         /* clear the form */
-        /* stop the button from submitting
-         * submit must be ng-click default action or something like that
-         */
         $scope.food = '';
         $scope.foodForm.$setPristine();
+        e.preventDefault();
       };
     };
   }]);
