@@ -28,6 +28,7 @@
       url = 'https://api.damonmcminn.com/nutrition/food?name=';
     }
 
+    /* has global scope */
     $scope.results = {
       food: [],
       noResults: undefined,
@@ -37,6 +38,10 @@
       prevSearch: null,
     };
 
+    /* has global scope
+     * should instead be a method
+     * this.findFood
+     */
     $scope.findFood = function(e) {
       if ($scope.foodForm.$invalid) {
         return;
@@ -72,6 +77,7 @@
       });
     };
 
+    /* has global scope -- no good? */
     $scope.clearForm = function(e) {
       /* clear the form */
       $scope.results.noResults = false;
