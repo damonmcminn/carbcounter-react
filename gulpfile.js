@@ -30,7 +30,7 @@ gulp.task('css', function() {
 });
 
 gulp.task('js', function() {
-  var root = 'src/js/';
+  var root = './src/js/';
   var config = {
     entries: root + 'index.js',
     debug: true
