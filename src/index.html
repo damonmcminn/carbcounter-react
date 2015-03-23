@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="nutrition">
+<html data-ng-app="nutrition">
   <head>
     <link rel="stylesheet" type"text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
     <link rel="stylesheet" type"text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
@@ -9,47 +9,48 @@
   <body>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script type="text/javascript" src="nutrition.js"></script>
-    <div ng-controller="FoodController as food" class="container">
-      <h2 class="centre">Carbs Finder</h2>
+    <div data-ng-controller="CarbController as vm" class="container">
+      <h2 class="centre">Carb Counter</h2>
       <div id="food-input">
-        <form name="foodForm" role="form">
+        <form data-ng-submit="vm.search()" name="foodForm" role="form">
           <div class="form-group">
             <label for="words">Food</label>
-            <input class="form-control" id="words" type="search" ng-model="food.words" required="true" placeholder="Type words here..." />
+            <input class="form-control" id="words" type="search" data-ng-model="vm.words" required="true" placeholder="polar bear" />
           </div>
           <div class="form-group">
             <label for="numbers">Weight in grams</label>
-            <input class="form-control" id="numbers" type="number" ng-model="food.weight" placeholder="Optional" ng-pattern="/\d+/">
+            <!-- Yes, I know it should be mass -->
+            <input class="form-control" id="numbers" type="number" data-ng-model="vm.weight" placeholder="Optional">
           </div>
           <div class="row">
             <div class="col-xs-6">
-              <button ng-click="findFood($event)" id="find-food" class="btn btn-primary btn-full-width">Find Food</button>
+              <button id="find-food" class="btn btn-primary btn-full-width">Find Food</button>
             </div>
             <div class="col-xs-6">
-              <button ng-click="clearForm($event)" id="clear-search" class="btn btn-danger btn-full-width">Clear Search</button>
+              <button type="reset" data-ng-click="vm.clear()" id="clear-search" class="btn btn-danger btn-full-width">Clear Search</button>
             </div>
           </div>
         </form>
       </div>
-      <div id="no-results" ng-show="results.noResults">
+      <div id="no-results" data-ng-show="vm.results.none">
         <hr>
-        <h4 class="text-center">No results found for {{results.prevSearch}}. Try spelling it differently.</h4>
+        <h4 class="text-center">No results found for {{vm.prevSearch}}. Try spelling it differently.</h4>
       </div>
-      <div id="Results" ng-show="results.food.length"> 
+      <div id="Results" data-ng-show="vm.food.length"> 
         <hr>
         <h3 class="centre">Results</h3>
         <table class="table">
           <tr>
             <th>Food</th>
-            <th class="text-right">Carbohydrate ({{results.unit}})</th>
+            <th class="text-right">Carbohydrate ({{vm.results.unit}})</th>
           </tr>
-          <tr ng-repeat="food in results.food">
+          <tr data-ng-repeat="food in vm.food">
             <td>{{food.name}}</td>
             <td class="text-right">{{food.carbs}}</>
             </tr>
         </table>
-        <div class="centre" ng-show="results.moreResults">
-          <button ng-click="findFood($event)" id="show-more-results" class="btn btn-default">Load More Results</button>
+        <div class="centre" data-ng-show="vm.results.more">
+          <button data-ng-click="vm.loadMore()" id="show-more-results" class="btn btn-default">Load More Results</button>
         </div>
       </div>
     </div>
