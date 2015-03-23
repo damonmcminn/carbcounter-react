@@ -43,7 +43,7 @@
             <th>Food</th>
             <th class="text-right">Carbohydrate ({{results.unit}})</th>
           </tr>
-          <tr ng-repeat="food in results.food | orderBy:'carbs'">
+          <tr ng-repeat="food in results.food">
             <td>{{food.name}}</td>
             <td class="text-right">{{food.carbs}}</>
             </tr>
