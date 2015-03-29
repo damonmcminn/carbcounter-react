@@ -21,6 +21,8 @@ function CarbController(CarbFactory) {
   vm.search = function() {
     vm.httpError = false;
     vm.prevSearch = vm.words;
+    // success callback concats
+    vm.food = [];
     cf.search(vm.words, vm.weight)
       .then(success, error);
   };
