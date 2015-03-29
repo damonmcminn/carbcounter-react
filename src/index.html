@@ -32,6 +32,10 @@
           </div>
         </form>
       </div>
+      <div data-ng-show="vm.httpError">
+        <hr>
+        <h4 class="text-center">There was an error contacting the server.</h4>
+      </div>
       <div id="no-results" data-ng-show="vm.results.none">
         <hr>
         <h4 class="text-center">No results found for {{vm.prevSearch}}. Try spelling it differently.</h4>

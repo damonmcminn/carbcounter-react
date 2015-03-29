@@ -19,27 +19,31 @@ function CarbFactory($http, $location) {
   var webhost = 'https://api.damonmcminn.com/';
   var host = (isLocal ? localhost : webhost) + 'nutrition/food?name=';
   
+  function processResults(data, mass, isPercentage) {
+    return {
+      results: {
+        none: (data.foods.length === 0),
+        more: (data.links.next !== undefined),
+        unit: isPercentage ? '%' : 'g',
+        next: data.links.next
+      },
+      food: data.foods.map(function(food) {
+        return {
+          name: food.name,
+          carbs: calcMacro(food.carbohydrate, mass, isPercentage)
+        }
+      })
+    }
+  }
+
   function findFood(url, weight) {
     var isPercentage = (weight === undefined);
     var mass = weight || 1;
 
     return $http.get(url)
       .then(function(res) {
-        var data = res.data;
-        return {
-          results: {
-            none: (data.foods.length === 0),
-            more: (data.links.next !== undefined),
-            unit: isPercentage ? '%' : 'g',
-            next: data.links.next
-          },
-          food: data.foods.map(function(food) {
-            return {
-              name: food.name,
-              carbs: calcMacro(food.carbohydrate, mass, isPercentage)
-            }
-          })
-        }
+        var OK = (res.status === 200);
+        return OK ? processResults(res.data, mass, isPercentage) : {};
       });
   }
 
