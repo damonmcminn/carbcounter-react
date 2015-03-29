@@ -8,6 +8,23 @@ function calcMacro(macro, weight, isPercentage) {
   }
 }
 
+function processResults(data, mass, isPercentage) {
+  return {
+    results: {
+      none: (data.foods.length === 0),
+      more: (data.links.next !== undefined),
+      unit: isPercentage ? '%' : 'g',
+      next: data.links.next
+    },
+    food: data.foods.map(function(food) {
+      return {
+        name: food.name,
+        carbs: calcMacro(food.carbohydrate, mass, isPercentage)
+      }
+    })
+  }
+}
+
 function CarbFactory($http, $location) {
 
   // CORS stuff
@@ -19,22 +36,6 @@ function CarbFactory($http, $location) {
   var webhost = 'https://api.damonmcminn.com/';
   var host = (isLocal ? localhost : webhost) + 'nutrition/food?name=';
   
-  function processResults(data, mass, isPercentage) {
-    return {
-      results: {
-        none: (data.foods.length === 0),
-        more: (data.links.next !== undefined),
-        unit: isPercentage ? '%' : 'g',
-        next: data.links.next
-      },
-      food: data.foods.map(function(food) {
-        return {
-          name: food.name,
-          carbs: calcMacro(food.carbohydrate, mass, isPercentage)
-        }
-      })
-    }
-  }
 
   function findFood(url, weight) {
     var isPercentage = (weight === undefined);
@@ -49,11 +50,16 @@ function CarbFactory($http, $location) {
 
   return {
     search: function(search, weight) {
-      var terms = search.split(' ').join('-');            
+      // 'polar bear' -> 'polar-bear'
+      // 'polar     bear' -> 'polar-bear'
+      var terms = search.split(' ')
+        .filter(function(word) {
+          return word.length > 0;
+        })
+        .join('-');            
       var req = host + terms;
       return findFood(req, weight);
     },
     getNext: findFood,
   }
 }
-      
