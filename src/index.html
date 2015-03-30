@@ -34,7 +34,7 @@
       </div>
       <div data-ng-show="vm.httpError">
         <hr>
-        <h4 class="text-center">There was an error contacting the server.</h4>
+        <h4 class="text-center">{{vm.errorMessage}}</h4>
       </div>
       <div id="no-results" data-ng-show="vm.results.none">
         <hr>

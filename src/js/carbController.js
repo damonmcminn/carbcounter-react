@@ -3,6 +3,7 @@ module.exports = CarbController;
 function CarbController(CarbFactory) {
   var cf = CarbFactory;
   var vm = this;
+  var serverError = 'There was an error contacting the server.';
 
   vm.httpError = false;
   vm.food = [];
@@ -14,6 +15,7 @@ function CarbController(CarbFactory) {
 
   function error(res) {
     vm.httpError = true;
+    vm.errorMessage = res.data ? res.data.message : serverError;
     vm.food = [];
     vm.results = {};
   }
