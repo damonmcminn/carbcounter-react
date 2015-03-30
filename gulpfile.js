@@ -11,6 +11,7 @@ var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('webserver', function() {
   connect.server({
+    port: process.env.CARBCOUNTER || 8082,
     root: 'dist',
     livereload: true,
   });
