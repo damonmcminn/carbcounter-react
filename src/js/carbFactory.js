@@ -32,9 +32,9 @@ function CarbFactory($http, $location) {
   delete $http.defaults.headers.common['X-Requested-With'];
 
   var isLocal = ($location.host() === 'localhost');
-  var localhost = 'http://localhost:50000/';
-  var webhost = 'https://api.damonmcminn.com/';
-  var host = (isLocal ? localhost : webhost) + 'nutrition/food?name=';
+  var localhost = 'http://localhost/nutrition/';
+  var webhost = 'https://api.damonmcminn.com/nutrition/';
+  var host = (isLocal ? localhost : webhost);
   
 
   function findFood(url, weight) {
