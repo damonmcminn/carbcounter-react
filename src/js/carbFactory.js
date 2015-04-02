@@ -1,3 +1,5 @@
+var qs = require('querystring');
+
 module.exports = CarbFactory;
 
 function calcMacro(macro, weight, isPercentage) {
@@ -32,8 +34,8 @@ function CarbFactory($http, $location) {
   delete $http.defaults.headers.common['X-Requested-With'];
 
   var isLocal = ($location.host() === 'localhost');
-  var localhost = 'http://localhost/nutrition/';
-  var webhost = 'https://api.damonmcminn.com/nutrition/';
+  var localhost = 'http://api.dev/nutrition/food';
+  var webhost = 'https://api.damonmcminn.com/nutrition/food';
   var host = (isLocal ? localhost : webhost);
   
 
@@ -50,14 +52,13 @@ function CarbFactory($http, $location) {
 
   return {
     search: function(search, weight) {
-      // 'polar bear' -> 'polar-bear'
-      // 'polar     bear' -> 'polar-bear'
+      // 'polar bear' -> 'search=polar&search=bear'
+      // 'polar     bear' -> 'search=polar&search=bear'
       var terms = search.split(' ')
         .filter(function(word) {
           return word.length > 0;
-        })
-        .join('-');            
-      var req = host + terms;
+        });
+      var req = host + '?' + qs.stringify({search: terms});
       return findFood(req, weight);
     },
     getNext: findFood,
