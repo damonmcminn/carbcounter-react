@@ -5,6 +5,7 @@ const fullWidth = {width: '100%'}
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
+
     // binding
     this.onSubmit = this.onSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -71,6 +72,8 @@ class SearchForm extends React.Component {
     // explicitly unset focus from button... why?!?!
     this.refs.clearSearchButton.getDOMNode().blur();
     this.props.actions.clearSearch();
+    // directly mutating state here...
+    this.refs.foodInput.getDOMNode().value = '';
   }
 }
 
