@@ -13,17 +13,22 @@ const API = {
           .reduce((a,b) => `${a}&${b}`)
         req.url = `${apiBase}food?${query}`;
       })
-      .end((err, res) => {
-        callback(err, res.body);
-      });
+      .end(handleResponse.bind(callback));
   },
   nextResults(url, callback) {
     request
       .get(url)
-      .end((err, res) => {
-        callback(err, res.body);
-      });
+      .end(handleResponse.bind(callback));
   }
 }
 
 export default API;
+
+function handleResponse(err, res) {
+  // this === bound callback
+  if (err) {
+    this(err);
+  } else {
+    this(null, res.body);
+  }
+}
