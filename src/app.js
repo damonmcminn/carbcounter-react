@@ -6,8 +6,7 @@ import API from './API'
 import Title from './title'
 import SearchForm from './searchForm'
 import Results from './results'
-import Loading from './loading'
-import MoreResultsButton from './moreResultsButton'
+import Notification from './notification'
 
 const maxWidth = {maxWidth: 500};
 
@@ -38,21 +37,18 @@ class App extends React.Component {
       grams: this.state.grams
     }
 
-    let loading = this.state.loading ? <Loading search={this.state.search}/> : null;
-    let links = this.state.data.links;
-    let loadMoreButton = null;
-
-    if (links && links.next) {
-      loadMoreButton = <MoreResultsButton loadMore={this.loadMore} />
-    }
-
     return (
       <div className="container" style={maxWidth}>
         <Title name="Carb Counter" />
         <SearchForm actions={actions} inputVals={vals} />
-        {loading}
-        <Results data={this.state.data} grams={this.state.grams} search={this.state.search}/>
-        {loadMoreButton}
+        <Notification error={this.state.error} loading={this.state.loading} search={this.state.search}/>
+        <Results
+          data={this.state.data}
+          grams={this.state.grams}
+          search={this.state.search}
+          loading={this.state.loading}
+          loadMore={this.loadMore}
+        />
       </div>
     )
   }
@@ -62,12 +58,18 @@ class App extends React.Component {
       search: food
     });
     API.foodSearch(food, (err, data) => {
-      this.setState({
-        // concat only if retrieving more results
-        data,
+      let state = {
         grams,
         loading: false
-      })
+      };
+
+      if (err) {
+        state.error = true;
+      } else {
+        state.data = data;
+      }
+
+      this.setState(state);
     })
   }
   clearSearch() {

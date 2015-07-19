@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 
 import ResultsTable from './resultsTable'
+import MoreResultsButton from './moreResultsButton'
 
 class Results extends React.Component {
   constructor(props) {
@@ -11,14 +12,30 @@ class Results extends React.Component {
     let data = this.props.data;
     let search = this.props.search;
 
+    let links = data.links;
+    let loadMoreButton = null;
+
+    if (links && links.next) {
+      loadMoreButton = <MoreResultsButton loadMore={this.props.loadMore} />
+    }
+
+    let resultsBody;
+
     if (_.isEmpty(data) || !search) {
-      return null;
+      resultsBody = null;
     } else if (!_.isEmpty(data.foods)) {
       let [foods, isGrams] = processFoods(data.foods, this.props.grams);
-      return <ResultsTable foods={foods} isGrams={isGrams} />;
+      resultsBody = <ResultsTable foods={foods} isGrams={isGrams} />;
     } else {
-      return <h4 style={{marginTop: '85px'}} className="text-center">No results for {search}</h4>;
+      resultsBody = <h4 style={{marginTop: '85px'}} className="text-center">No results for {search}</h4>;
     }
+
+    return (
+      <div>
+        {resultsBody}
+        {loadMoreButton}
+      </div>
+    );
   }
 }
 
