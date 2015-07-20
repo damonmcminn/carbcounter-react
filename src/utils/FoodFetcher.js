@@ -14,3 +14,5 @@ const FoodFetcher = {
     return request(url)
   }
 };
+
+export default FoodFetcher;
