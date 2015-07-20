@@ -3,6 +3,8 @@ import _ from 'lodash'
 
 import API from './API'
 
+import FoodFetcher from './utils/FoodFetcher'
+
 import Title from './title'
 import SearchForm from './searchForm'
 import Results from './results'
@@ -57,20 +59,21 @@ class App extends React.Component {
       loading: true,
       search: food
     });
-    API.foodSearch(food, (err, data) => {
-      let state = {
-        grams,
-        loading: false
-      };
 
-      if (err) {
-        state.error = true;
-      } else {
+    let state = {
+      grams,
+      loading: false
+    };
+
+    FoodFetcher.search(food)
+      .then(data => {
         state.data = data;
-      }
-
-      this.setState(state);
-    })
+        this.setState(state);
+      })
+      .catch(err => {
+        state.error = true;
+        this.setState(state);
+      });
   }
   clearSearch() {
     this.setState({
@@ -86,14 +89,18 @@ class App extends React.Component {
   }
   loadMore() {
     this.setState({loading: true});
-    API.nextResults(this.state.data.links.next, (err, data) => {
-      data.foods = this.state.data.foods.concat(data.foods);
-      this.setState({
-        // concat only if retrieving more results
-        data,
-        loading: false
-      });
-    });
+
+    FoodFetcher.next(this.state.data.links.next)
+      .then(data => {
+        data.foods = this.state.data.foods.concat(data.foods);
+
+        this.setState({
+          // concat only if retrieving more results
+          data,
+          loading: false
+        });
+
+      })
   }
 }
 
