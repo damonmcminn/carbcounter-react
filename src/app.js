@@ -3,6 +3,8 @@ import _ from 'lodash'
 
 import FoodFetcher from './utils/FoodFetcher'
 
+import FoodFetcher from './utils/FoodFetcher'
+
 import Title from './title'
 import SearchForm from './searchForm'
 import Results from './results'
