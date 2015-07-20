@@ -1,3 +1,4 @@
-###carbcounter
-Find and calculate carbohydrate amounts in one fell swoop.  
-Use it here: https://damonmcminn.com/carbs
+###deprecated###
+
+Go here:
+https://github.com/damonmcminn/carbcounter-react
