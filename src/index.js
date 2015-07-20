@@ -1,4 +1,4 @@
 import React from 'react'
-import App from './app'
+import CarbCounter from './components/CarbCounter'
 
-React.render(<App />, document.getElementById('root'));
+React.render(<CarbCounter />, document.getElementById('root'));

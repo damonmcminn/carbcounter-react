@@ -1,9 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import API from './API'
-
-import FoodFetcher from './utils/FoodFetcher'
+import FoodFetcher from '../utils/FoodFetcher'
 
 import Title from './title'
 import SearchForm from './searchForm'
