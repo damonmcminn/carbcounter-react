@@ -1,0 +1,66 @@
+<!doctype html>
+<html data-ng-app="nutrition">
+  <head>
+    <link rel="stylesheet" type"text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type"text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" type"text/css" href="nutrition.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  </head>
+  <body>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script type="text/javascript" src="nutrition.js"></script>
+    <div data-ng-controller="CarbController as vm" class="container">
+      <h2 class="centre">Carb Counter</h2>
+      <div id="food-input">
+        <form data-ng-submit="vm.search()" name="foodForm" role="form">
+          <div class="form-group">
+            <label for="words">Food</label>
+            <input class="form-control" id="words" type="search" data-ng-model="vm.words" required="true" placeholder="polar bear" />
+          </div>
+          <div class="form-group">
+            <label for="numbers">Weight in grams</label>
+            <!-- Yes, I know it should be mass -->
+            <input class="form-control" id="numbers" type="number" data-ng-model="vm.weight" placeholder="Optional">
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <button id="find-food" class="btn btn-primary btn-full-width">Find Food</button>
+            </div>
+            <div class="col-xs-6">
+              <button type="reset" data-ng-click="vm.clear()" id="clear-search" class="btn btn-danger btn-full-width">Clear Search</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div data-ng-show="vm.httpError">
+        <hr>
+        <h4 class="text-center">{{vm.errorMessage}}</h4>
+      </div>
+      <div id="no-results" data-ng-show="vm.results.none">
+        <hr>
+        <h4 class="text-center">No results found for {{vm.prevSearch}}. Try spelling it differently.</h4>
+      </div>
+      <div id="Results" data-ng-show="vm.food.length"> 
+        <hr>
+        <h3 class="centre">Results</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Food</th>
+              <th class="text-right">{{vm.results.unit}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-ng-repeat="food in vm.food">
+              <td>{{food.name}}</td>
+              <td class="text-right">{{food.carbs}}</>
+              </tr>
+            </tbody>
+        </table>
+        <div class="centre" data-ng-show="vm.results.more">
+          <button data-ng-click="vm.loadMore()" id="show-more-results" class="btn btn-default">Load More Results</button>
+        </div>
+      </div>
+    </div>
+  <body>
+</html>
