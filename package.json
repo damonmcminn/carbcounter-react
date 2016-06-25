@@ -9,8 +9,10 @@
     "live-server": "livereload dev-build",
     "watch": "watchify src/index.js -t babelify --outfile dev-build/bundle.js -v --debug",
     "watch-and-serve": "cp src/index.html dev-build/index.html; npm run watch & npm run live-server & npm run serve",
-    "compile": "browserify src/index.js -t babelify | uglifyjs --compress --mangle > build/bundle.js",
-    "build": "mkdir build; cp src/index.html build/index.html; npm run compile"
+    "compile": "browserify src/index.js -t babelify | uglifyjs --compress --mangle > bundle.js",
+    "build": "cp src/index.html index.html && npm run compile",
+    "prebuild": "git merge develop",
+    "postbuild": "rm -rf src"
   },
   "devDependencies": {
     "babelify": "^6.1.3",
