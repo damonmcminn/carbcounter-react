@@ -1,14 +1,12 @@
 import React from 'react'
-import _ from 'lodash'
-
 import FoodFetcher from './utils/FoodFetcher'
-
 import Title from './title'
 import SearchForm from './searchForm'
 import Results from './results'
 import Notification from './notification'
 
 const maxWidth = {maxWidth: 500};
+const fetcher = new FoodFetcher('https://nutrition-api.apps.kinjarling.org')
 
 class App extends React.Component {
   constructor(props) {
@@ -63,7 +61,7 @@ class App extends React.Component {
       loading: false
     };
 
-    FoodFetcher.search(food)
+    fetcher.search(food)
       .then(data => {
         state.data = data;
         this.setState(state);
@@ -88,7 +86,7 @@ class App extends React.Component {
   loadMore() {
     this.setState({loading: true});
 
-    FoodFetcher.next(this.state.data.links.next)
+    fetcher.next(this.state.data.links.next)
       .then(data => {
         data.foods = this.state.data.foods.concat(data.foods);
 

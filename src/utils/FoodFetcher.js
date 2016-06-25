@@ -1,18 +1,23 @@
 import request from './request'
 
-const FoodFetcher = {
-  search(food) {
+class FoodFetcher {
+  constructor (host) {
+    this.host = host
+  }
+
+  search (food) {
     let query = food.split(' ')
       .map(word => `search=${word}`)
-      .reduce((a,b) => `${a}&${b}`)
+      .reduce((a, b) => `${a}&${b}`)
 
-    let url = `https://api.damonmcminn.com/nutrition/food?${query}`;
+    let url = `${this.host}/food?${query}`
 
-    return request(url)
-  },
-  next(url) {
     return request(url)
   }
-};
 
-export default FoodFetcher;
+  next (url) {
+    return request(url)
+  }
+}
+
+export default FoodFetcher
